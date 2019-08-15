@@ -31,9 +31,13 @@ if (strstr($softInfo, "文件取消分享了") != false) {
         , JSON_UNESCAPED_UNICODE | JSON_PRETTY_PRINT | JSON_UNESCAPED_SLASHES)
     );
 }
+//preg_match('/var filename = \'(.*?)\';/', $softInfo, $softName);
 preg_match('~class="b">(.*?)<\/div>~', $softInfo, $softName);
+//preg_match('~class="b">(.*?)<\/div>~', $softInfo, $softName);
 if(!isset($softName[1])){
 	preg_match('~<div class="n_box_fn".*?>(.*?)</div>~', $softInfo, $softName);
+}else if($softName[1] == "<div id=\"b\">"){
+    preg_match('/var filename = \'(.*?)\';/', $softInfo, $softName);
 }
 preg_match('~<div class="n_box_des".*?>(.*?)</div>~', $softInfo, $softDesc);
 if (strstr($softInfo, "手机Safari可在线安装") != false) {
@@ -58,12 +62,14 @@ if (strstr($softInfo, "手机Safari可在线安装") != false) {
     }
     
     $ipaDownUrl = isset($ipaDownUrl[1]) ? $ipaDownUrl[1] : "";
-    if ($type != "down") {
+    if ($type != "download") {
+        //$arr = parse_url($ipaDownUrl);
         die(
         json_encode(
             array(
                 'code' => 200,
                 'msg' => '',
+                //'name' => convertUrlQuery($arr['query']),
                 'name' => isset($softName[1]) ? $softName[1] : "",
                 'downUrl' => $ipaDownUrl
             )
@@ -127,13 +133,15 @@ $headers = [
 	'Accept-Language: zh-CN,zh;q=0.9'
 ];
 $downUrl = MloocCurlGetDownUrl($downUrl, $headers);
-if ($type != "down") {
+if ($type != "download") {
+    //$arr = parse_url($downUrl);
     die(
     json_encode(
         array(
             'code' => 200,
             'msg' => '',
             'name' => isset($softName[1]) ? $softName[1] : "",
+            //'name' => convertUrlQuery($arr['query']),
 			'desc' => isset($softDesc[1]) ? $softDesc[1] : "",
             'downUrl' => $downUrl
         )
@@ -198,4 +206,48 @@ function MloocCurlPost($post_data, $url, $ifurl = '', $UserAgent = 'Mozilla/5.0 
     $response = curl_exec($curl);
     curl_close($curl);
     return $response;
+}
+function convertUrlQuery($query)
+{
+    $queryParts = explode('&', $query);
+    $params = array();
+    $file_name = null;
+    foreach ($queryParts as $param) {
+        $item = explode('=', $param);
+        if($item[0] == 'q')
+            $file_name = $item[1];
+    }
+    return utf8RawUrlDecode($file_name);
+}
+function utf8RawUrlDecode ($source)
+{
+    $decodedStr = "";
+    $pos = 0;
+    $len = strlen ($source);
+    while ($pos < $len) {
+        $charAt = substr ($source, $pos, 1);
+        if ($charAt == '%') {
+            $pos++;
+            $charAt = substr ($source, $pos, 1);
+            if ($charAt == 'u') {
+                // we got a unicode character
+                $pos++;
+                $unicodeHexVal = substr ($source, $pos, 4);
+                $unicode = hexdec ($unicodeHexVal);
+                $entity = "&#". $unicode . ';';
+                $decodedStr .= utf8_encode ($entity);
+                $pos += 4;
+            }
+            else {
+                // we have an escaped ascii character
+                $hexVal = substr ($source, $pos, 2);
+                $decodedStr .= chr (hexdec ($hexVal));
+                $pos += 2;
+            }
+        } else {
+            $decodedStr .= $charAt;
+            $pos++;
+        }
+    }
+    return $decodedStr;
 }
