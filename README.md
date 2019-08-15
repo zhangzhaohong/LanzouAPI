@@ -15,7 +15,7 @@
 
 url:蓝奏云外链链接
 
-type:是否直接下载 值：down
+type:是否直接下载 值：download
 
 pwd:外链密码
 
