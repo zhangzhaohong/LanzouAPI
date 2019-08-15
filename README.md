@@ -21,9 +21,9 @@ pwd:外链密码
 
 ### 直接下载：
 
-无密码：/api.php?url=https://www.lanzous.com/i1aesgj&type=down
+无密码：/api.php?url=https://www.lanzous.com/i1aesgj&type=download
 
-有密码：/api.php?url=https://www.lanzous.com/i19pnjc&type=down&pwd=1pud
+有密码：/api.php?url=https://www.lanzous.com/i19pnjc&type=download&pwd=1pud
 
 
 ### 输出直链：
