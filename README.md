@@ -21,14 +21,18 @@ pwd:外链密码
 
 ### 直接下载：
 
-无密码：/api.php?url=https://www.lanzous.com/i1aesgj&type=download
+无密码：/LanZouApi.php?url=https://www.lanzous.com/i1aesgj&type=download
 
-有密码：/api.php?url=https://www.lanzous.com/i19pnjc&type=download&pwd=1pud
+有密码：/LanZouApi.php?url=https://www.lanzous.com/i19pnjc&type=download&pwd=1pud
 
 
 ### 输出直链：
 
-无密码：/api.php?url=https://www.lanzous.com/i1aesgj
+无密码：/LanZouApi.php?url=https://www.lanzous.com/i1aesgj
 
-有密码：/api.php?url=https://www.lanzous.com/i19pnjc&pwd=1pud
+有密码：/LanZouApi.php?url=https://www.lanzous.com/i19pnjc&pwd=1pud
+
+###使用旧版本：
+
+所有链接最后加上：ver=1,不加则自动使用新版本
 
