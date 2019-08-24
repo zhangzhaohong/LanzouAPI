@@ -115,7 +115,9 @@ if(strstr($softInfo, "function down_p(){") != false){
 	);
 	$softInfo = MloocCurlPost($post_data, "https://www.lanzous.com/ajaxm.php", $url);
 }else{
-	preg_match("~iframe.*?name=\"[\s\S]*?\"\ssrc=\"\/(.*?)\"~", $softInfo, $link);
+    preg_match_all("~<!--<iframe.*?name=\"[\s\S]*?\"\ssrc=\"\/(.*?)\".*?>-->~", $softInfo, $link_zs);
+    $softInfo = str_replace($link_zs[0],'',$softInfo);
+    preg_match("~iframe.*?name=\"[\s\S]*?\"\ssrc=\"\/(.*?)\"~", $softInfo, $link);
 	$ifurl = "https://www.lanzous.com/" . $link[1];
 	$softInfo = MloocCurlGet($ifurl);
 	preg_match("~'action':'(.*?)','sign':'(.*?)'~", $softInfo, $segment);
