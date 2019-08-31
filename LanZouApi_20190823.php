@@ -8,7 +8,7 @@
      */
     
     header('Access-Control-Allow-Origin:*');
-    header('Content-Type:application/json; charset=utf-8');
+    header('Content-Type:text/html; charset=utf-8');
     $url = isset($_GET['url']) ? $_GET['url'] : "";
     $pwd = isset($_GET['pwd']) ? $_GET['pwd'] : "";
     $type = isset($_GET['type']) ? $_GET['type'] : "";
